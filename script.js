@@ -11,7 +11,7 @@ function abrirInvitacion() {
     setTimeout(() => {
         envelope.style.display = 'none';
         invitacion.style.display = 'block';
-
+        initMusicAutoplay();
     }, 1000); // Ajustar tiempo para esperar la animación de apertura del sobre
 }
 
@@ -74,7 +74,7 @@ async function cargarDatosInvitado() {
 
 // Función para iniciar el contador de la fecha del evento
 function iniciarContador() {
-    const eventoFecha = new Date("October 04, 2025 20:00:00").getTime();
+    const eventoFecha = new Date("March 07, 2026 20:00:00").getTime();
 
     setInterval(() => {
         const ahora = new Date().getTime();
@@ -141,7 +141,7 @@ function closeModal(event) {
     });
 
 // Link directo (puede ser el corto o el largo)
-const GF_BASE = "https://docs.google.com/forms/d/e/1FAIpQLScIbR_LCyOTg7IMdhJ58GGWXbSAxlLcgHcCzpGb-DyQGxttSg/viewform?usp=pp_url";
+const GF_BASE = "https://docs.google.com/forms/d/e/1FAIpQLScGmoYGsXDcgiEd9ckIt__ywFH0tRPeYcrx2M8-EMNSp5kSHw/viewform?usp=dialog";
 
 // Confirmación → abre el formulario en nueva pestaña
 function confirmarAsistencia() {
@@ -155,13 +155,13 @@ function confirmarAsistencia() {
 //iglesia
 // Iglesia
 function elegirAplicacion() {
-  const enlaceWaze = 'https://ul.waze.com/ul?venue_id=176619666.1766196661.2132634&overview=yes&utm_campaign=default&utm_source=waze_website&utm_medium=lm_share_location';
+  const enlaceWaze = 'https://maps.app.goo.gl/WY2Q8J3UZ4u3H6rq5';
   window.open(enlaceWaze, '_blank');
 }
 
 // Fiesta
 function elegirAplicacionOtraDireccion() {
-  const enlaceWaze = 'https://ul.waze.com/ul?venue_id=176619666.1766065588.26091657&overview=yes&utm_campaign=default&utm_source=waze_website&utm_medium=lm_share_location';
+  const enlaceWaze = 'https://maps.app.goo.gl/h2PKqkyEWd8ahDa8A';
   window.open(enlaceWaze, '_blank');
 }
 
@@ -186,6 +186,145 @@ document.addEventListener('DOMContentLoaded', function () {
         console.error('Error al guardar el deseo:', error);
         alert('Hubo un problema al enviar tu mensaje.');
       });
+  });
+});
+
+// --- Música: autoplay al abrir, play/pause, loop, progreso ---
+let musicInitialized = false;
+
+function formatTime(seconds) {
+  if (!Number.isFinite(seconds)) return "0:00";
+  const m = Math.floor(seconds / 60);
+  const s = Math.floor(seconds % 60);
+  return `${m}:${String(s).padStart(2, "0")}`;
+}
+
+function initMusicAutoplay() {
+  if (musicInitialized) return;
+  musicInitialized = true;
+
+  const audio = document.getElementById("bg-music");
+  const btn = document.getElementById("music-toggle");
+  const icon = btn?.querySelector("i");
+  const progress = document.getElementById("music-progress");
+  const currentEl = document.getElementById("music-current");
+  const durationEl = document.getElementById("music-duration");
+
+  if (!audio || !btn || !progress || !currentEl || !durationEl) return;
+
+  // Set duration when metadata loads
+  audio.addEventListener("loadedmetadata", () => {
+    durationEl.textContent = formatTime(audio.duration);
+  });
+
+  // Update progress while playing
+  audio.addEventListener("timeupdate", () => {
+    currentEl.textContent = formatTime(audio.currentTime);
+    if (audio.duration) {
+      progress.value = String((audio.currentTime / audio.duration) * 100);
+    }
+  });
+
+  // Seek
+  progress.addEventListener("input", () => {
+    if (!audio.duration) return;
+    const pct = Number(progress.value) / 100;
+    audio.currentTime = pct * audio.duration;
+  });
+
+  // Play/Pause toggle
+  btn.addEventListener("click", async () => {
+    try {
+      if (audio.paused) {
+        await audio.play();
+        if (icon) icon.className = "fas fa-pause";
+        btn.setAttribute("aria-label", "Pausar música");
+      } else {
+        audio.pause();
+        if (icon) icon.className = "fas fa-play";
+        btn.setAttribute("aria-label", "Reproducir música");
+      }
+    } catch (e) {
+      console.warn("No se pudo reproducir audio:", e);
+    }
+  });
+
+  // Autoplay (como viene desde click del seal, suele funcionar)
+  audio.play()
+    .then(() => {
+      if (icon) icon.className = "fas fa-pause";
+      btn.setAttribute("aria-label", "Pausar música");
+    })
+    .catch((e) => {
+      // Si el navegador bloquea algo, quedará listo para que el usuario presione Play
+      console.warn("Autoplay bloqueado, requiere interacción extra:", e);
+      if (icon) icon.className = "fas fa-play";
+      btn.setAttribute("aria-label", "Reproducir música");
+    });
+}
+function agregarAlCalendario() {
+  const title = encodeURIComponent("Mis XV Stephanie Alessandra González Calito");
+
+  // Guatemala GMT-6
+  const start = "20260307T170000";
+  const end   = "20260307T235900";
+
+  const details = encodeURIComponent(
+    "Te esperamos para celebrar los XV años de Stephanie Alessandra González Calito."
+  );
+
+  const location = encodeURIComponent(
+    "Ciudad de Guatemala, Guatemala"
+  );
+
+  const calendarUrl =
+    `https://www.google.com/calendar/render?action=TEMPLATE` +
+    `&text=${title}` +
+    `&dates=${start}/${end}` +
+    `&details=${details}` +
+    `&location=${location}` +
+    `&ctz=America/Guatemala`;
+
+  window.open(calendarUrl, "_blank");
+}
+// --- Galería Lightbox ---
+document.addEventListener("DOMContentLoaded", () => {
+  const lightbox = document.getElementById("lightbox");
+  const lightboxImg = document.getElementById("lightbox-img");
+  const closeBtn = document.getElementById("lightbox-close");
+
+  if (!lightbox || !lightboxImg || !closeBtn) return;
+
+  // Abrir al hacer click en cualquier imagen de la galería
+  document.querySelectorAll(".galeria-grid img").forEach((img) => {
+    img.addEventListener("click", () => {
+      lightboxImg.src = img.src;
+      lightbox.classList.add("open");
+      lightbox.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden"; // evita scroll atrás
+    });
+  });
+
+  // Cerrar (botón X)
+  function cerrarLightbox() {
+    lightbox.classList.remove("open");
+    lightbox.setAttribute("aria-hidden", "true");
+    lightboxImg.src = "";
+    document.body.style.overflow = "";
+  }
+
+  closeBtn.addEventListener("click", cerrarLightbox);
+
+  // Cerrar clic fuera de la imagen
+  lightbox.addEventListener("click", (e) => {
+    if (e.target === lightbox) cerrarLightbox();
+  });
+
+  // Cerrar con ESC
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && lightbox.classList.contains("open")) {
+      cerrarLightbox();
+    }
   });
 });
 

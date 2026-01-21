@@ -8,7 +8,7 @@
     <meta property="og:type" content="website">
     <meta property="og:title" content="Mis XV Daniela Stephanie Alessandra">
     <meta property="og:description" content="Gracias por ser parte de este momento inolvidable.">
-    <meta property="og:image" content="">
+    <meta property="og:image" content="https://i.postimg.cc/XYszTtbv/FSA.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="/style.css">
     <link rel="preload" href="/imagenes/flower-6.png" as="image">
@@ -36,13 +36,14 @@
         </header>
         <div class="section-title fade-in-element">
             <h1>Mis XV</h1>
-            <h2>Stephanie Alessandra González Calito</h2>
+            <h2>Stephanie Alessandra</h2>
+            <h3>González Calito</h3>
         </div>
         <!-- Contador de Fecha Regresiva -->
         <div class="section-countdown fade-in-element">
             <h1>¡Están invitados!</h1>
             <p>Nos encanta que sean parte de este momento tan especial para nosotros.</p>
-            <h2>04 . 10 . 2025</h2>
+            <h2>07 . 03 . 2026</h2>
             <div id="contador">
                 <div class="countdown-circle">
                     <span id="dias">00</span>
@@ -61,15 +62,41 @@
                     <span>segundos</span>
                 </div>
             </div>
-        </div>  
+            <button class="calendar-btn" onclick="agregarAlCalendario()">
+                Agregar al Calendario
+            </button>              
+        </div>
+        <!-- Música -->
+<div class="section-music fade-in-element" id="music-section">
+    <p class="music-title">"Let It Go"</p>
+  
+    <div class="music-player">
+      <button type="button" class="music-btn" id="music-toggle" aria-label="Pausar música">
+        <i class="fas fa-pause"></i>
+      </button>
+  
+      <div class="music-track">
+        <span class="music-time" id="music-current">0:00</span>
+        <input type="range" id="music-progress" value="0" min="0" max="100" step="1">
+        <span class="music-time" id="music-duration">0:00</span>
+      </div>
+    </div>
+  
+    <!-- Audio (cambia la ruta por tu mp3) -->
+    <audio id="bg-music" preload="auto" loop>
+      <source src="/frozen.mp3" type="audio/mpeg">
+      Tu navegador no soporta audio.
+    </audio>
+  </div>
+    
         <!--div cerezo-->
         <div class="section-cerezo0"></div>  
          <!-- Bendición de Padres -->
          <div class="section-b fade-in-element">
             <p>Con la bendición de Dios y de mis padres</p>
-            <h1>Carlos Gularte</h1>
+            <h1>Milso Alexsander González Aquino</h1>
             <h2>&</h2>
-            <h1>Gabriela Calvillo</h1>
+            <h1>Evelin Guiselle Calito Calito</h1>
         </div>
         <!-- Nombre de Invitados y Cantidad de Pases -->
         <div class="section-guest fade-in-element">
@@ -106,14 +133,14 @@
                  style="width:200px;height:200px">
                </lord-icon>
                <h2>Ceremonia</h2>
-               <p>Cristo Rey</p>
+               <p>Iglesia de San Francisco</p>
                <div class="details">
                    <div class="time-location">
-                     <span class="date">04 Octubre</span>
+                     <span class="date">03 Marzo</span>
                      <span class="separator">|</span>
                      <span class="time">17:00 hrs</span>
                   </div>
-                     <p>3A Calle, Zona 15, Ciudad de Guatemala </p>
+                     <p>6ta avenida y 13 calle, esquina Zona 1, Ciudad de Guatemala</p>
                      <button type="button" class="direction-button" onclick="elegirAplicacion()">Cómo llegar</button>
                </div>
             </div>
@@ -128,14 +155,14 @@
              style="width:200px;height:200px">
             </lord-icon>
            <h2>Fiesta</h2>
-           <p>Hotel Wyndham Garden Guatemala City</p>
+           <p>Club Guatemala</p>
            <div class="details">
             <div class="time-location">
-                <span class="date">04 Octubre</span>
+                <span class="date">03 Marzo</span>
                 <span class="separator">|</span>
                 <span class="time">19:00 hrs</span>
             </div>
-        <p>1 Avenida 12-46, Zona 10, Ciudad de Guatemala</p>
+        <p>7ma. Avenida 12-75 Zona 1, Ciudad de Guatemala</p>
         <button type="button" class="direction-button" onclick="elegirAplicacionOtraDireccion()">Cómo llegar</button>
            </div>
            </div>
@@ -168,7 +195,7 @@
                     </lord-icon>
                     <p>Ayúdame a armar la playlist con tus canciones favoritas e inolvidables para mi fiesta.</p>
                     <button
-                      onclick="window.open('https://open.spotify.com/playlist/2ZAQ3vS6oqffjbTb05R5Zr?si=0c2ed90f448448f8&pt=c89280593c90aa244224bfb656226b0f', '_blank', 'noopener')"
+                      onclick="window.open('https://open.spotify.com/playlist/4fUS1iFr25w4RsOGagtTSO?si=99257f6230334a20&pt=d13182e48cf388251562a650a1325ef0', '_blank', 'noopener')"
                     >
                       Abrir playlist en Spotify
                     </button>
@@ -186,8 +213,28 @@
             colors="primary:#b38fcc,secondary:#9273ab"
             style="width:200px;height:200px">
         </lord-icon>
-            <p>Formal con tenis, los colores lila y morados están reservados completamente para la quinceañera </p>
+            <p>Semiformal, los colores lila y morados están reservados completamente para la quinceañera </p>
         </div>
+        <!-- Galería -->
+<div class="section-gallery fade-in-element" id="galeria">
+    <h2>Galería</h2>
+    <p>Haz clic en una foto para verla en grande.</p>
+  
+    <div class="galeria-grid">
+      <!-- Cambia estas rutas por tus fotos reales -->
+      <img src="/Imagenes/foto1.jpeg" alt="Foto 1" loading="lazy">
+      <img src="/Imagenes/foto2.jpeg" alt="Foto 2" loading="lazy">
+      <img src="/Imagenes/foto3.jpeg" alt="Foto 3" loading="lazy">
+        <img src="/Imagenes/foto4.jpeg" alt="Foto 4" loading="lazy">
+    </div>
+  </div>
+  
+  <!-- Lightbox / Modal -->
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <button class="lightbox-close" id="lightbox-close" aria-label="Cerrar">×</button>
+    <img class="lightbox-img" id="lightbox-img" alt="Foto ampliada">
+  </div>
+  
                 <!--div cerezo-->
         <div class="section-cerezo2"></div>   
         <!-- Buenos deseos -->
@@ -206,42 +253,17 @@
       <textarea id="wish-message" placeholder="Tu mensaje"></textarea>
       <button id="submit-wish">Enviar</button>
     </div>
+    <button type="button" id="toggle-wishes-btn" onclick="toggleWishes()">
+        Leer buenos deseos
+      </button>
+      
+      <div id="wishes-container" class="hidden" data-loaded="false"></div>
+      
         </section>
-        <!-- Recuerdos / Álbum Digital -->
-        <div class="section-filter fade-in-element">
-    <h2>¡Hagamos las memorias eternas!</h2>
-  
-    <lord-icon
-      src="https://cdn.lordicon.com/wsaaegar.json"
-      trigger="loop"
-      delay="2000"
-      stroke="light"
-      colors="primary:#b38fcc,secondary:#9273ab"
-      style="width:200px;height:200px">
-    </lord-icon>
-  
-    <p>Etiqueta tus fotos en Instagram con</p>
-    <h1 class="hashtag">#misxvdaniela</h1>
-  
-    <p>También puedes subir tus fotos al álbum digital. Escanea el código QR o usa el botón:</p>
-  
-    <div class="qr-container">
-      <!-- Reemplaza la ruta por tu imagen QR -->
-      <img src="/imagenes/QR-Daniela.png" alt="Escanea el QR para subir fotos" width="240" height="240" loading="lazy">
-      <a class="upload-btn"
-         href="https://drive.google.com/drive/folders/1waiW90Tukb_rJGXBzgiRVf50ESAYrJzX?usp=drive_link"
-         target="_blank" rel="noopener">
-         Subir fotos al Álbum
-      </a>
-    </div>
-        </div>
-        <!-- Imagen -->
-        <div class="section fade-in-element">
-            <img src="/imagenes/H2.jpg" alt="Foto de la quinceañera" width="100%" loading="lazy">
-        </div>
+        <div class="section-cerezo000"></div>
         <!-- frase final-->
         <div class="section-quote fade-in-element">
-            <h1>Con tu presencia este día será aun más especial</h1>
+            <h1>La vida se vive en momentos como este y quiero que seas parte de mi historia</h1>
         </div>
         <!-- Footer -->
         <footer>

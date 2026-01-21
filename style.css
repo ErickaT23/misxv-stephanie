@@ -91,7 +91,7 @@ body {
 .sintillo {
     width: 100%;
     height: 200px; /* ajusta según tu imagen */
-    background-image: url('/imagenes/flower-6.png'); /* ⚠️ ruta en minúsculas */
+    background-image: url('/imagenes/D1.png'); /* ⚠️ ruta en minúsculas */
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -110,7 +110,8 @@ body {
   }
   
   .section-title h1,
-  .section-title h2 {
+  .section-title h2,
+  .section-title h3 {
     margin: 0;
     font-family: var(--font-title);
     font-weight: 500;
@@ -120,20 +121,21 @@ body {
     -webkit-background-clip: text;
     color: transparent;
     animation: shine 1.5s infinite linear;
-    padding: 50px;
+    padding: 30px;
   }
-  
   /* Tamaños adaptables */
   .section-title h1 {
-    font-size: 70px;
+    font-size: 55px;
+    margin-top: -30px;
+  }
+  .section-title h2 {
+    font-size: 80px;
     margin-top: -50px;
   }
-  
-  .section-title h2 {
-    font-size: 90px;
-    margin-top: -120px;
+  .section-title h3{
+    font-size: 65px;
+    margin-top: -60px;
   }
-  
 .section-main {
     position: relative;
     margin: 0;
@@ -173,7 +175,7 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-top: -50px;
+    margin-top: 0px;
 }
 .section-countdown h1 {
     background: linear-gradient(to right, #d8bff8, #e6ccff, #ba9fd3, #e6ccff, #d8bff8);
@@ -237,7 +239,6 @@ body {
 .section-b{
     position: relative;
     width: 100%;
-    height: 400px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -262,7 +263,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('Imagenes/flower-5.png');
+    background-image: url('Imagenes/D2.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -285,7 +286,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('Imagenes/flower-7.png');
+    background-image: url('Imagenes/D3.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -309,7 +310,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('/Imagenes/flower-5.png');
+    background-image: url('/Imagenes/D2.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -332,7 +333,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('/Imagenes/flower-3.png');
+    background-image: url('/Imagenes/D4.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -355,7 +356,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('/Imagenes/flower-2.png');
+    background-image: url('/Imagenes/D5.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -378,7 +379,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('/Imagenes/flower-3.png');
+    background-image: url('/Imagenes/D4.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -763,5 +764,204 @@ footer {
     -webkit-background-clip: text;
     color: transparent;
     margin: -6px 0 8px;
+  }
+
+  /* --- Música --- */
+.section-music{
+    width: 100%;
+    padding: 20px 18px 10px;
+    box-sizing: border-box;
+    margin-top: 10px;
+  }
+  
+  .music-title{
+    font-family: var(--font-text);
+    font-style: italic;
+    font-size: 22px;
+    color: var(--color-2);
+    margin: 0 0 12px;
+  }
+  
+  .music-player{
+    width: 100%;
+    max-width: 520px;
+    margin: 0 auto 10px;
+    background: rgba(250, 242, 255, 0.55);
+    border-radius: 26px;
+    padding: 12px 5px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.10);
+  }
+  
+  .music-btn{
+    width: 44px;
+    height: 44px;
+    border-radius: 999px;
+    background: #9273ab;
+    color: #fff;
+    display: grid;
+    place-items: center;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .music-btn i{
+    font-size: 16px;
+  }
+  
+  .music-track{
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .music-time{
+    font-family: var(--font-text);
+    font-style: italic;
+    font-size: 14px;
+    color: var(--color-2);
+    min-width: 40px;
+  }
+  
+  #music-progress{
+    width: 100%;
+    accent-color: #9273ab;
+  }
+  .calendar-btn{
+    background: linear-gradient(to right, #d8bff8, #ba9fd3);
+    color: #fff;
+    border-radius: 25px;
+    padding: 12px 24px;
+    font-family: var(--font-title);
+    font-style: italic;
+    font-size: 22px;
+    border: none;
+    margin-top: 18px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+    transition: transform .2s ease, box-shadow .2s ease;
+  }
+  
+  .calendar-btn:hover{
+    transform: scale(1.05);
+    box-shadow: 0 10px 24px rgba(0,0,0,0.25);
+  }
+/* --- Galería --- */
+.section-gallery{
+    width: 100%;
+    padding: 20px 18px 30px;
+    box-sizing: border-box;
+  }
+  
+  .section-gallery h2{
+    font-family: var(--font-title);
+    padding: 15px;
+    font-weight: 400;
+    font-style: italic;
+    font-size: 50px;
+    margin-top: -10px;
+    margin-bottom: -10px;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+    background: linear-gradient(to right, #d8bff8, #e6ccff, #ba9fd3, #e6ccff, #d8bff8);
+    -webkit-background-clip: text;
+    color: transparent;
+  }
+  
+  .section-gallery p{
+    font-family: var(--font-text);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 22px;
+    padding: 5px;
+    margin: 0 0 14px;
+    color: var(--color-1);
+  }
+  
+  .galeria-grid{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 6px 0;
+  }
+  
+  .galeria-grid img{
+    width: 100%;
+    height: 170px;
+    object-fit: cover;
+    border-radius: 14px;
+    cursor: pointer;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.10);
+    transition: transform .18s ease, box-shadow .18s ease;
+  }
+  
+  .galeria-grid img:hover{
+    transform: scale(1.02);
+    box-shadow: 0 10px 24px rgba(0,0,0,0.18);
+  }
+  
+  /* Tablet/Desktop mejora */
+  @media (min-width: 768px){
+    .galeria-grid{
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .galeria-grid img{
+      height: 210px;
+    }
+  }
+  
+  /* --- Lightbox --- */
+  .lightbox{
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.82);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    padding: 18px;
+    box-sizing: border-box;
+  }
+  
+  .lightbox.open{
+    display: flex;
+  }
+  
+  .lightbox-img{
+    max-width: min(900px, 92vw);
+    max-height: 82vh;
+    border-radius: 14px;
+    box-shadow: 0 14px 40px rgba(0,0,0,0.35);
+  }
+  
+  .lightbox-close{
+    position: absolute;
+    top: 14px;
+    right: 18px;
+    width: 44px;
+    height: 44px;
+    border-radius: 999px;
+    border: none;
+    background: rgba(255,255,255,0.18);
+    color: #fff;
+    font-size: 30px;
+    line-height: 1;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+    transition: transform .15s ease, background .15s ease;
+  }
+  
+  .lightbox-close:hover{
+    transform: scale(1.06);
+    background: rgba(255,255,255,0.28);
+  }
+  #toggle-wishes-btn{
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 12px 18px;
   }
   
