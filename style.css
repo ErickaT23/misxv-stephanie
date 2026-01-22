@@ -108,7 +108,18 @@ body {
     text-align: center;
     z-index: 1;
   }
-  
+  .section-title{
+    background-image: url(/Imagenes/FT.png);
+    background-position: top;
+    background-size: contain;
+    background-repeat: inherit;
+  }
+  .section{
+    background-image: url(/Imagenes/FT.png);
+    background-position: top;
+    background-size: contain;
+    background-repeat: inherit;
+  }
   .section-title h1,
   .section-title h2,
   .section-title h3 {
@@ -457,9 +468,16 @@ body {
     margin-bottom: -22px;
 }
 .section-playlist{
-    background-color: #faf2ff80;
+    background-image: url(/Imagenes/FM.png);
     margin-bottom: -5px;
     margin-top: 20px;
+    background-color: #faf2ff80;
+}
+.section-gifts{
+  background-image: url(/Imagenes/FT.png);
+    background-position: top;
+    background-size: contain;
+    background-repeat: inherit;
 }
 .section p, .section-gifts p, .section-filter p, .section-playlist p{
     font-family: var(--font-1);
@@ -673,6 +691,10 @@ footer {
 #wishes-section {
     padding: 30px 20px;
     font-family: var(--font-1);
+    background-image: url(/Imagenes/FT.png);
+    background-position: top;
+    background-size: contain;
+    background-repeat: inherit;
   }
   
   #wishes-section h2 {
@@ -964,4 +986,108 @@ footer {
     margin-bottom: 10px;
     padding: 12px 18px;
   }
-  
+
+ 
+  /*DESTELLOS*/
+  /* ===== MAGIA PLATEADA ===== */
+#sparkles-layer{
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+  overflow: hidden;
+}
+
+/* Partículas flotantes */
+.sparkle-dot{
+  position: absolute;
+  width: var(--size, 6px);
+  height: var(--size, 6px);
+  border-radius: 50%;
+  background: radial-gradient(circle,
+    rgba(255,255,255,1) 0%,
+    rgba(230,230,240,.9) 35%,
+    rgba(200,200,210,.4) 60%,
+    rgba(200,200,210,0) 70%
+  );
+  opacity: 0;
+  filter: drop-shadow(0 0 12px rgba(255,255,255,.9));
+  animation: floatUp var(--dur, 6s) ease-out forwards;
+}
+
+/* Estrellas mágicas */
+.sparkle-star{
+  position: absolute;
+  font-size: var(--starSize, 16px);
+  color: #ffffff;
+  opacity: 0;
+  text-shadow:
+    0 0 6px rgba(255,255,255,.9),
+    0 0 14px rgba(220,220,230,.8);
+  animation: twinkle var(--dur, 3.5s) ease-in-out forwards;
+}
+
+@keyframes floatUp{
+  0%{
+    transform: translateY(0) scale(.4);
+    opacity: 0;
+  }
+  20%{ opacity: 1; }
+  70%{ opacity: .9; }
+  100%{
+    transform: translateY(-80px) scale(1.2);
+    opacity: 0;
+  }
+}
+
+@keyframes twinkle{
+  0%{
+    opacity: 0;
+    transform: scale(.4) rotate(0deg);
+  }
+  30%{
+    opacity: 1;
+    transform: scale(1.3) rotate(20deg);
+  }
+  60%{
+    opacity: .8;
+    transform: scale(1) rotate(-15deg);
+  }
+  100%{
+    opacity: 0;
+    transform: scale(.3) rotate(0deg);
+  }
+}
+/* ===== MARIPOSITAS MÁGICAS ===== */
+.magic-butterfly{
+  position: absolute;
+  width: var(--bf-size, 18px);
+  height: var(--bf-size, 18px);
+  background-image: url("/Imagenes/Mariposa.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0;
+  filter:
+    drop-shadow(0 0 8px rgba(255,255,255,.9))
+    drop-shadow(0 0 14px rgba(220,220,230,.8));
+  animation: butterflyMagic var(--bf-dur, 5s) ease-in-out forwards;
+  will-change: transform, opacity;
+}
+
+@keyframes butterflyMagic{
+  0%{
+    transform: translateY(0) scale(.4) rotate(0deg);
+    opacity: 0;
+  }
+  25%{
+    opacity: 1;
+  }
+  60%{
+    opacity: .9;
+  }
+  100%{
+    transform: translateY(-70px) scale(1.2) rotate(25deg);
+    opacity: 0;
+  }
+}

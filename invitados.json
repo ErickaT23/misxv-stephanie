@@ -1,5 +1,8 @@
 {
-  "1": { "nombre": "Alan y Claudia", "pases": 4 }
+  "1": { "nombre": "Alan y Claudia", "pases": 4 },
+  "2": { "nombre": "Bruno y Sofia", "pases": 2 },
+  "3": { "nombre": "Carlos", "pases": 1 },
+  "4": { "nombre": "Diana y Luis", "pases": 3 }
 }
 
   

@@ -141,12 +141,55 @@ function closeModal(event) {
     });
 
 // Link directo (puede ser el corto o el largo)
-const GF_BASE = "https://docs.google.com/forms/d/e/1FAIpQLScGmoYGsXDcgiEd9ckIt__ywFH0tRPeYcrx2M8-EMNSp5kSHw/viewform?usp=dialog";
+// ===== RSVP: Google Forms por cantidad de pases + prellenado =====
 
-// Confirmación → abre el formulario en nueva pestaña
-function confirmarAsistencia() {
-  window.open(GF_BASE, '_blank');
+// Entries (según tu ejemplo)
+const GF_ENTRY_NOMBRE = "entry.1297710131";
+
+// OJO: este entry de "pases" lo usaré para 2–4.
+// Si en alguno cambia, me mandas 1 link prellenado de ese form y lo ajusto.
+const GF_ENTRY_PASES = "entry.2016105650";
+
+// Links por pases (los tuyos)
+const GF_FORMS_BY_PASES = {
+  4: "https://docs.google.com/forms/d/e/1FAIpQLSdp8KgXI6UHHrjGGlTQ_jLQxvxEl_U1MjeUNjXDKnCXOG3_dw/viewform?usp=dialog",
+  3: "https://docs.google.com/forms/d/e/1FAIpQLSdRfwy5IN985d3tE0TrBjmiCUrkDyX9kUSfibu1T7vdxSloqg/viewform?usp=dialog",
+  2: "https://docs.google.com/forms/d/e/1FAIpQLSdv7Dd2_bcTU0-szvszKq1l7GOB5E5Sn1_90dQkH8tpQtxt9A/viewform?usp=dialog",
+  1: "https://docs.google.com/forms/d/e/1FAIpQLScGmoYGsXDcgiEd9ckIt__ywFH0tRPeYcrx2M8-EMNSp5kSHw/viewform?usp=pp_url"
+};
+
+// Helper: convertir dialog → pp_url (más estable para prefill)
+function normalizeFormUrl(url) {
+  if (!url) return url;
+  return url.replace("usp=dialog", "usp=pp_url");
 }
+
+function confirmarAsistencia() {
+  const invitado = window.__invitadoActual || {};
+  const nombre = (invitado.nombre || "").trim();
+  const pases = Number.isFinite(invitado.pases) ? invitado.pases : 1;
+
+  // Si no hay nombre (por ejemplo id inexistente), abre el form de 1 pase sin prefill
+  const baseRaw = GF_FORMS_BY_PASES[pases] || GF_FORMS_BY_PASES[1];
+  const base = normalizeFormUrl(baseRaw);
+
+  const params = new URLSearchParams();
+
+  // Prefill: nombre (si existe)
+  if (nombre) params.set(GF_ENTRY_NOMBRE, nombre);
+
+  // Prefill: pases solo para 2–4 (porque tu form de 1 pase no lo trae en el ejemplo)
+  if (pases >= 2 && pases <= 4) {
+    params.set(GF_ENTRY_PASES, String(pases));
+  }
+
+  const urlFinal = params.toString()
+    ? `${base}&${params.toString()}`
+    : base;
+
+  window.open(urlFinal, "_blank", "noopener");
+}
+
 
 
   
@@ -155,7 +198,7 @@ function confirmarAsistencia() {
 //iglesia
 // Iglesia
 function elegirAplicacion() {
-  const enlaceWaze = 'https://maps.app.goo.gl/WY2Q8J3UZ4u3H6rq5';
+  const enlaceWaze = 'https://maps.app.goo.gl/FqSRJai6oJUxN7Hx9';
   window.open(enlaceWaze, '_blank');
 }
 
@@ -329,3 +372,50 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
   
+// ===== MARIPOSITAS MÁGICAS =====
+(function magicButterflies(){
+  const layer = document.getElementById("sparkles-layer");
+  if (!layer) return;
+
+  const prefersReduced = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+  if (prefersReduced) return;
+
+  const rand = (min, max) => Math.random() * (max - min) + min;
+
+  function butterfly(){
+    const b = document.createElement("div");
+    b.className = "magic-butterfly";
+
+    b.style.setProperty("--bf-size", `${rand(14, 26)}px`);
+    b.style.setProperty("--bf-dur", `${rand(4.5, 7)}s`);
+
+    b.style.left = `${rand(5, 95)}vw`;
+    b.style.top = `${rand(60, 100)}vh`;
+
+    layer.appendChild(b);
+
+    setTimeout(() => b.remove(), 8000);
+  }
+
+  // Aparición inicial suave
+  for(let i=0;i<12;i++){
+    setTimeout(butterfly, i * 180);
+  }
+
+  // Flujo constante (elegante)
+  setInterval(() => {
+    butterfly();
+    if(Math.random() > .6) butterfly();
+  }, 600);
+
+  // Oleadas mágicas al hacer scroll
+  let ticking = false;
+  window.addEventListener("scroll", () => {
+    if(ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      for(let i=0;i<4;i++) butterfly();
+      ticking = false;
+    });
+  });
+})();
