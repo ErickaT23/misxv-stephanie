@@ -396,26 +396,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
     setTimeout(() => b.remove(), 8000);
   }
+// Aparición inicial MUY sutil
+for(let i = 0; i < 4; i++){
+  setTimeout(butterfly, i * 600);
+}
 
-  // Aparición inicial suave
-  for(let i=0;i<12;i++){
-    setTimeout(butterfly, i * 180);
-  }
+// Flujo constante LENTO y elegante
+setInterval(() => {
+  butterfly();
+}, 3000);
 
-  // Flujo constante (elegante)
-  setInterval(() => {
+// Oleadas MÍNIMAS al hacer scroll
+let ticking = false;
+window.addEventListener("scroll", () => {
+  if(ticking) return;
+  ticking = true;
+  requestAnimationFrame(() => {
     butterfly();
-    if(Math.random() > .6) butterfly();
-  }, 600);
-
-  // Oleadas mágicas al hacer scroll
-  let ticking = false;
-  window.addEventListener("scroll", () => {
-    if(ticking) return;
-    ticking = true;
-    requestAnimationFrame(() => {
-      for(let i=0;i<4;i++) butterfly();
-      ticking = false;
-    });
+    ticking = false;
   });
+});
 })();
