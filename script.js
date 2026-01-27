@@ -140,57 +140,34 @@ function closeModal(event) {
         });
     });
 
-// Link directo (puede ser el corto o el largo)
-// ===== RSVP: Google Forms por cantidad de pases + prellenado =====
 
-// Entries (según tu ejemplo)
+    //RSVP
+    // ===== RSVP: 1 solo Google Form (prefill por id) =====
+const GF_BASE =
+"https://docs.google.com/forms/d/e/1FAIpQLScGmoYGsXDcgiEd9ckIt__ywFH0tRPeYcrx2M8-EMNSp5kSHw/viewform?usp=pp_url";
+
+// Entries (según tu link prellenado)
 const GF_ENTRY_NOMBRE = "entry.1297710131";
-
-// OJO: este entry de "pases" lo usaré para 2–4.
-// Si en alguno cambia, me mandas 1 link prellenado de ese form y lo ajusto.
-const GF_ENTRY_PASES = "entry.2016105650";
-
-// Links por pases (los tuyos)
-const GF_FORMS_BY_PASES = {
-  4: "https://docs.google.com/forms/d/e/1FAIpQLSdp8KgXI6UHHrjGGlTQ_jLQxvxEl_U1MjeUNjXDKnCXOG3_dw/viewform?usp=dialog",
-  3: "https://docs.google.com/forms/d/e/1FAIpQLSdRfwy5IN985d3tE0TrBjmiCUrkDyX9kUSfibu1T7vdxSloqg/viewform?usp=dialog",
-  2: "https://docs.google.com/forms/d/e/1FAIpQLSdv7Dd2_bcTU0-szvszKq1l7GOB5E5Sn1_90dQkH8tpQtxt9A/viewform?usp=dialog",
-  1: "https://docs.google.com/forms/d/e/1FAIpQLScGmoYGsXDcgiEd9ckIt__ywFH0tRPeYcrx2M8-EMNSp5kSHw/viewform?usp=pp_url"
-};
-
-// Helper: convertir dialog → pp_url (más estable para prefill)
-function normalizeFormUrl(url) {
-  if (!url) return url;
-  return url.replace("usp=dialog", "usp=pp_url");
-}
+const GF_ENTRY_PASES  = "entry.2016105650";
 
 function confirmarAsistencia() {
-  const invitado = window.__invitadoActual || {};
-  const nombre = (invitado.nombre || "").trim();
-  const pases = Number.isFinite(invitado.pases) ? invitado.pases : 1;
+const invitado = window.__invitadoActual || {};
+const nombre = (invitado.nombre || "").trim();
+const pases  = Number.isFinite(invitado.pases) ? invitado.pases : "";
 
-  // Si no hay nombre (por ejemplo id inexistente), abre el form de 1 pase sin prefill
-  const baseRaw = GF_FORMS_BY_PASES[pases] || GF_FORMS_BY_PASES[1];
-  const base = normalizeFormUrl(baseRaw);
-
-  const params = new URLSearchParams();
-
-  // Prefill: nombre (si existe)
-  if (nombre) params.set(GF_ENTRY_NOMBRE, nombre);
-
-  // Prefill: pases solo para 2–4 (porque tu form de 1 pase no lo trae en el ejemplo)
-  if (pases >= 2 && pases <= 4) {
-    params.set(GF_ENTRY_PASES, String(pases));
-  }
-
-  const urlFinal = params.toString()
-    ? `${base}&${params.toString()}`
-    : base;
-
-  window.open(urlFinal, "_blank", "noopener");
+// Si no hay id o no se cargó invitado, abre el form sin prefill
+if (!nombre && pases === "") {
+  window.open(GF_BASE, "_blank", "noopener");
+  return;
 }
 
+const params = new URLSearchParams();
+if (nombre) params.set(GF_ENTRY_NOMBRE, nombre);
+if (pases !== "") params.set(GF_ENTRY_PASES, String(pases));
 
+const urlFinal = `${GF_BASE}&${params.toString()}`;
+window.open(urlFinal, "_blank", "noopener");
+}
 
   
       
@@ -387,7 +364,7 @@ document.addEventListener("DOMContentLoaded", () => {
     b.className = "magic-butterfly";
 
     b.style.setProperty("--bf-size", `${rand(14, 26)}px`);
-    b.style.setProperty("--bf-dur", `${rand(4.5, 7)}s`);
+    b.style.setProperty("--bf-dur", `${rand(3.2, 5)}s`);
 
     b.style.left = `${rand(5, 95)}vw`;
     b.style.top = `${rand(60, 100)}vh`;
@@ -397,23 +374,16 @@ document.addEventListener("DOMContentLoaded", () => {
     setTimeout(() => b.remove(), 8000);
   }
 // Aparición inicial MUY sutil
-for(let i = 0; i < 4; i++){
-  setTimeout(butterfly, i * 600);
+for(let i = 0; i < 12; i++){
+  setTimeout(butterfly, i * 260);
 }
 
 // Flujo constante LENTO y elegante
+// Oleadas: cada ciclo aparecen 3–4 mariposas
 setInterval(() => {
-  butterfly();
-}, 3000);
-
-// Oleadas MÍNIMAS al hacer scroll
-let ticking = false;
-window.addEventListener("scroll", () => {
-  if(ticking) return;
-  ticking = true;
-  requestAnimationFrame(() => {
-    butterfly();
-    ticking = false;
-  });
-});
+  const burst = Math.random() < 0.5 ? 3 : 4; // 3 o 4 mariposas
+  for (let i = 0; i < burst; i++) {
+    setTimeout(butterfly, i * 180); // espacito para que no salgan pegadas
+  }
+}, 3200);
 })();
