@@ -141,33 +141,290 @@ function closeModal(event) {
     });
 
 
-    //RSVP
-    // ===== RSVP: 1 solo Google Form (prefill por id) =====
-const GF_BASE =
-"https://docs.google.com/forms/d/e/1FAIpQLScGmoYGsXDcgiEd9ckIt__ywFH0tRPeYcrx2M8-EMNSp5kSHw/viewform?usp=pp_url";
+//RSVP
+/************************************************************
+ * RSVP ENDPOINT CONFIG (Two Design)
+ ************************************************************/
 
-// Entries (según tu link prellenado)
-const GF_ENTRY_NOMBRE = "entry.1297710131";
-const GF_ENTRY_PASES  = "entry.2016105650";
+// Producción (Netlify / dominio)
+const PROD_ENDPOINT =
+  "https://script.google.com/macros/s/AKfycbx8vhjrvVl0Os1zAOGKotKTvKG0QrKOZutWHpbX_KtQY9goGc2iQzVxJBTjKBvk8Az_/exec";
 
-function confirmarAsistencia() {
-const invitado = window.__invitadoActual || {};
-const nombre = (invitado.nombre || "").trim();
-const pases  = Number.isFinite(invitado.pases) ? invitado.pases : "";
+// Local (solo si necesitas evitar CORS en localhost)
+// Si no lo necesitas, puedes dejarlo vacío ""
+const LOCAL_ENDPOINT = "";
 
-// Si no hay id o no se cargó invitado, abre el form sin prefill
-if (!nombre && pases === "") {
-  window.open(GF_BASE, "_blank", "noopener");
-  return;
+/**
+ * Selección automática de endpoint
+ */
+const RSVP_ENDPOINT =
+  (location.hostname.includes("127.0.0.1") || location.hostname.includes("localhost"))
+    ? (LOCAL_ENDPOINT || PROD_ENDPOINT)
+    : PROD_ENDPOINT;
+
+/************************************************************
+ * Cargar invitado desde invitados.json usando ?id=
+ ************************************************************/
+function getGuestIdFromUrl() {
+  const params = new URLSearchParams(window.location.search);
+  const raw = params.get("id");
+  if (!raw) return null;
+  return String(raw).trim();
 }
 
-const params = new URLSearchParams();
-if (nombre) params.set(GF_ENTRY_NOMBRE, nombre);
-if (pases !== "") params.set(GF_ENTRY_PASES, String(pases));
+async function loadInvitadoActual() {
+  const id = getGuestIdFromUrl();
+  if (!id) return null;
 
-const urlFinal = `${GF_BASE}&${params.toString()}`;
-window.open(urlFinal, "_blank", "noopener");
+  const res = await fetch("invitados.json", { cache: "no-store" });
+  const data = await res.json();
+
+  const invitado = data[id];
+  if (!invitado) return null;
+
+  // Convención Two Design
+  window.__invitadoActual = { id, ...invitado }; // { id, nombre, pases }
+  return window.__invitadoActual;
 }
+
+/************************************************************
+ * HELPERS UI
+ ************************************************************/
+const $ = (sel) => document.querySelector(sel);
+
+function showMsg(el, text, type = "ok") {
+  el.textContent = text;
+  el.className = `rsvp-msg ${type === "ok" ? "ok" : "err"}`;
+  el.style.display = "block";
+}
+
+function hideMsg(el) {
+  el.style.display = "none";
+  el.textContent = "";
+  el.className = "rsvp-msg";
+}
+
+function openRsvpModal() {
+  const backdrop = $("#rsvpBackdrop");
+
+  backdrop.style.display = "flex";
+  backdrop.setAttribute("aria-hidden", "false");
+
+  // Pequeño delay para permitir animación
+  setTimeout(() => {
+    backdrop.classList.add("show");
+  }, 120); // ⏱️ 120ms (natural, elegante)
+}
+
+
+function closeRsvpModal() {
+  const backdrop = $("#rsvpBackdrop");
+
+  backdrop.classList.remove("show");
+  backdrop.setAttribute("aria-hidden", "true");
+
+  // Espera a que termine la animación antes de ocultar
+  setTimeout(() => {
+    backdrop.style.display = "none";
+  }, 250);
+}
+
+
+/************************************************************
+ * API
+ ************************************************************/
+async function apiCheckAlreadyConfirmed(guestId) {
+  if (!RSVP_ENDPOINT) return false;
+
+  const url = `${RSVP_ENDPOINT}?guestId=${encodeURIComponent(guestId)}`;
+  const res = await fetch(url);
+  const data = await res.json();
+  return data?.alreadyConfirmed === true;
+}
+
+async function apiSendRSVP(payload) {
+  if (!RSVP_ENDPOINT) {
+    return { ok: false, message: "RSVP_ENDPOINT no configurado." };
+  }
+
+  // Envío compatible con Apps Script (form-urlencoded)
+  const body = new URLSearchParams();
+  body.set("guestId", payload.guestId);
+  body.set("nombre", payload.nombre);
+  body.set("pases", String(payload.pases));
+  body.set("respuesta", payload.respuesta);
+
+  const res = await fetch(RSVP_ENDPOINT, {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8" },
+    body: body.toString(),
+  });
+
+  return await res.json();
+}
+
+/************************************************************
+ * INIT
+ ************************************************************/
+document.addEventListener("DOMContentLoaded", async () => {
+  const invitado = await loadInvitadoActual();
+
+  const btnConfirmar = $("#btnConfirmarRsvp");
+  const msgRsvp = $("#msgRsvp");
+
+  // Validación invitado
+  if (!invitado) {
+    btnConfirmar.disabled = true;
+    showMsg(msgRsvp, "Invitación no válida. No se encontró el invitado.", "err");
+    return;
+  }
+
+  // Precarga modal
+  $("#rsvpNombre").value = invitado.nombre || "";
+  $("#rsvpPases").value = String(invitado.pases ?? "");
+
+  // Cerrar modal
+  $("#btnRsvpClose").addEventListener("click", () => {
+    hideMsg($("#rsvpMsgModal"));
+    closeRsvpModal();
+  });
+
+  $("#rsvpBackdrop").addEventListener("click", (e) => {
+    if (e.target.id === "rsvpBackdrop") {
+      hideMsg($("#rsvpMsgModal"));
+      closeRsvpModal();
+    }
+  });
+
+  // Verificación inicial (ya confirmó)
+  try {
+    const already = await apiCheckAlreadyConfirmed(invitado.id);
+    if (already) {
+      btnConfirmar.disabled = true;
+      btnConfirmar.textContent = "Confirmación enviada ✔";
+      showMsg(msgRsvp, "Gracias, ya has enviado tu confirmación.", "ok");
+      return;
+    }
+  } catch {
+    showMsg(msgRsvp, "No se pudo verificar la confirmación. Intenta más tarde.", "err");
+  }
+
+  // Click Confirmar
+  btnConfirmar.addEventListener("click", async () => {
+    hideMsg(msgRsvp);
+    hideMsg($("#rsvpMsgModal"));
+  
+    // 👉 Abrimos el modal CASI inmediato
+    openRsvpModal();
+  
+    try {
+      const already = await apiCheckAlreadyConfirmed(invitado.id);
+  
+      if (already) {
+        // Si ya confirmó, mostramos mensaje y bloqueamos
+        const msgModal = $("#rsvpMsgModal");
+  
+        showMsg(
+          msgModal,
+          "Gracias, ya has enviado tu confirmación.",
+          "ok"
+        );
+  
+        btnConfirmar.disabled = true;
+        btnConfirmar.textContent = "Confirmación enviada ✔";
+  
+        // Cerramos el modal tras breve tiempo
+        setTimeout(() => closeRsvpModal(), 1500);
+      }
+  
+      // Si NO ha confirmado, no hacemos nada:
+      // los botones ya están visibles
+  
+    } catch (e) {
+      showMsg(
+        $("#rsvpMsgModal"),
+        "No se pudo verificar la confirmación. Intenta nuevamente.",
+        "err"
+      );
+    }
+  });
+  
+
+// Envío RSVP (mensaje inmediato + cierre rápido)
+async function confirmar(respuesta) {
+  const btnSi = $("#btnRsvpSi");
+  const btnNo = $("#btnRsvpNo");
+  const msgModal = $("#rsvpMsgModal");
+
+  // Mensajes finales
+  const msgSi =
+    "Gracias por confirmar tu asistencia y hacer este día aún más especial.";
+  const msgNo =
+    "Lamentamos que no puedas acompañarnos en esta ocasión, pero agradecemos tu respuesta.";
+
+  // ✅ Feedback inmediato
+  hideMsg(msgModal);
+  showMsg(msgModal, respuesta === "SI" ? msgSi : msgNo, "ok");
+
+  // ✅ Bloqueo inmediato en UI
+  btnSi.disabled = true;
+  btnNo.disabled = true;
+
+  btnConfirmar.disabled = true;
+  btnConfirmar.textContent = "Confirmación enviada ✔";
+  showMsg(msgRsvp, "Gracias, ya has enviado tu confirmación.", "ok");
+
+  try {
+    const payload = {
+      guestId: String(invitado.id),
+      nombre: invitado.nombre,
+      pases: Number(invitado.pases) || 1,
+      respuesta, // "SI" o "NO"
+    };
+
+    const data = await apiSendRSVP(payload);
+
+    // Si el backend dice "ya confirmado", mostramos ese mensaje y cerramos rápido
+    if (data?.code === "ALREADY_CONFIRMED") {
+      showMsg(msgModal, "Gracias, ya has enviado tu confirmación.", "ok");
+      setTimeout(() => closeRsvpModal(), 900);
+      return;
+    }
+
+    // Si backend devuelve error (poco común), avisamos y permitimos reintento
+    if (!data?.ok) {
+      showMsg(msgModal, data?.message || "No se pudo guardar la confirmación.", "err");
+
+      // Re-habilitar para reintento
+      btnSi.disabled = false;
+      btnNo.disabled = false;
+
+      btnConfirmar.disabled = false;
+      btnConfirmar.textContent = "Confirmar";
+      return;
+    }
+
+    // ✅ Si todo ok: cerramos rápido (no 5s)
+    setTimeout(() => closeRsvpModal(), 800);
+
+  } catch {
+    showMsg(msgModal, "Error enviando confirmación. Intenta nuevamente.", "err");
+
+    // Re-habilitar para reintento
+    btnSi.disabled = false;
+    btnNo.disabled = false;
+
+    btnConfirmar.disabled = false;
+    btnConfirmar.textContent = "Confirmar";
+  }
+}
+
+
+  $("#btnRsvpSi").addEventListener("click", () => confirmar("SI"));
+  $("#btnRsvpNo").addEventListener("click", () => confirmar("NO"));
+});
+
+
 
   
       

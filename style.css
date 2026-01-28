@@ -1091,3 +1091,132 @@ footer {
     opacity: 0;
   }
 }
+/* RSVP (Two Design style) */
+/* Animación entrada RSVP */
+.rsvp-backdrop {
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.rsvp-backdrop.show {
+  opacity: 1;
+}
+
+.rsvp-modal {
+  transform: translateY(10px) scale(0.96);
+  opacity: 0;
+  transition:
+    transform 0.25s ease,
+    opacity 0.25s ease;
+}
+
+.rsvp-backdrop.show .rsvp-modal {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+}
+
+.rsvp-backdrop{
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  background: rgba(0,0,0,.55);
+  z-index: 9999;
+}
+
+.rsvp-modal{
+  width: min(520px, 95vw);
+  background: #574267;
+  border: 1px solid rgba(255,255,255,.12);
+  box-shadow: 0 20px 60px rgba(0,0,0,.55);
+  border-radius: 18px;
+  padding: 18px 18px 16px;
+  position: relative;
+  color: #fff;
+  backdrop-filter: blur(8px);
+}
+
+.rsvp-close{
+  position: absolute;
+  top: 14px;
+  right: 10px;
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.18);
+  background: rgba(255,255,255,.06);
+  color: #fff;
+  font-size: 30px;
+  cursor: pointer;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.rsvp-sub{
+  margin: 6px 0 14px;
+  opacity: .85;
+}
+
+.rsvp-label{
+  display: block;
+  margin: 10px 0 6px;
+  font-size: 15px;
+  opacity: .9;
+}
+
+.rsvp-input{
+  width: 90%;
+  padding: 12px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.06);
+  color: #fff;
+  outline: none;
+}
+
+.rsvp-actions{
+  display: flex;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.rsvp-btn{
+  flex: 1;
+  padding: 12px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,.14);
+  cursor: pointer;
+  font-weight: 600;
+  background: rgba(255,255,255,.06);
+  color: #fff;
+}
+
+.rsvp-yes{ border-color: #e6ccff }
+.rsvp-no{ border-color: #ad94cd }
+
+.rsvp-msg{
+  margin-top: 12px;
+  padding: 12px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.07);
+}
+
+.rsvp-msg.ok{
+  text-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+  background: linear-gradient(to right,#d8bff8,#e6ccff,#ba9fd3,#e6ccff,#d8bff8);
+  -webkit-background-clip: text;
+  color: transparent;
+  font-size: 20px;
+}
+
+.rsvp-msg.err{
+  text-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+  background: linear-gradient(to right,#d8bff8,#e6ccff,#ba9fd3,#e6ccff,#d8bff8);
+  -webkit-background-clip: text;
+  color: transparent;
+  font-size: 20px;
+}

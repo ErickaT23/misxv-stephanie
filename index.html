@@ -110,19 +110,52 @@
                             <h3 id="cantidadPases"></h3>
         </div>
         <!-- Confirmación -->
-        <div class="section fade-in-element">
-                            <h3>Confirmar Asistencia</h3>
-                            <lord-icon
-                              src="https://cdn.lordicon.com/unkasvor.json"
-                              trigger="loop"
-                              delay="2000"
-                              stroke="light"
-                              colors="primary:#b38fcc,secondary:#9273ab"
-                              style="width:200px;height:200px">
-                            </lord-icon>
-                            <p>Para nosotros es muy importante que confirmes tu asistencia lo antes posible, o bien indicarnos si no podrás acompañarnos.</p>
-                            <button onclick="confirmarAsistencia()">Confirmar</button>
-        </div> 
+        <div class="section fade-in-element" id="rsvpSection">
+          <h3>Confirmar Asistencia</h3>
+
+          <lord-icon
+            src="https://cdn.lordicon.com/unkasvor.json"
+            trigger="loop"
+            delay="2000"
+            stroke="light"
+            colors="primary:#b38fcc,secondary:#9273ab"
+            style="width:200px;height:200px">
+          </lord-icon>
+
+          <p>
+            Para nosotros es muy importante que confirmes tu asistencia lo antes posible,
+            o bien indicarnos si no podrás acompañarnos.
+          </p>
+
+          <button id="btnConfirmarRsvp" type="button">Confirmar</button>
+
+          <div id="msgRsvp" class="rsvp-msg" style="display:none"></div>
+        </div>
+
+        <!-- RSVP Modal -->
+        <div id="rsvpBackdrop" class="rsvp-backdrop" aria-hidden="true" style="display:none">
+          <div class="rsvp-modal" role="dialog" aria-modal="true" aria-labelledby="rsvpTitle">
+            <button class="rsvp-close" id="btnRsvpClose" type="button" aria-label="Cerrar">×</button>
+
+            <h3 id="rsvpTitle">Confirmación de asistencia</h3>
+            <p class="rsvp-sub">agradecemos nos indiques si podrás o no acompañaros.</p>
+
+            <label class="rsvp-label">Nombre</label>
+            <input id="rsvpNombre" class="rsvp-input" type="text" readonly>
+
+            <label class="rsvp-label">Cantidad de pases</label>
+            <input id="rsvpPases" class="rsvp-input" type="text" readonly>
+
+            <div class="rsvp-actions">
+              <button id="btnRsvpSi" type="button" class="rsvp-btn rsvp-yes">Sí, asistiré</button>
+              <button id="btnRsvpNo" type="button" class="rsvp-btn rsvp-no">No, asistiré</button>
+            </div>
+
+            <div id="rsvpMsgModal" class="rsvp-msg" style="display:none"></div>
+          </div>
+        </div>
+
+
         <!--div cerezo-->
         <div class="section-cerezo000"></div>   
         <!-- Itinerario -->
