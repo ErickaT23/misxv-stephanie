@@ -244,7 +244,7 @@ body {
     color: white;
     font-weight: 400;
     padding: 0;
-    font-family: var(--font-1);
+    font-family: var(--font-text);
     font-style: italic;
 }
 .section-b{
@@ -480,7 +480,7 @@ body {
     background-repeat: inherit;
 }
 .section p, .section-gifts p, .section-filter p, .section-playlist p{
-    font-family: var(--font-1);
+    font-family: var(--font-text);
     font-style: italic;
     font-weight: 400;
     font-size: 22px;
@@ -489,7 +489,7 @@ body {
     color: var(--color-1);
 }
 .section span{
-    font-family: var(--font-1);
+    font-family: var(--font-text);
     font-style: normal;
     font-weight: 400;
     font-size: 1.2em;
@@ -562,7 +562,7 @@ button {
     background-color: #9273ab;
     color: #fff;
     border-radius: 5px;
-    font-family: var(--font-1);
+    font-family: var(--font-text);
     padding: 10px;
     transition: background-color 0.3s;
     border: none;
@@ -690,7 +690,7 @@ footer {
 }
 #wishes-section {
     padding: 30px 20px;
-    font-family: var(--font-1);
+    font-family: var(--font-text);
     background-image: url(/Imagenes/FT.png);
     background-position: top;
     background-size: contain;
@@ -730,7 +730,7 @@ footer {
     width: 90%;
     margin: 10px 0;
     padding: 10px;
-    font-family: var(--font-1);
+    font-family: var(--font-text);
     font-style: italic;
     border-radius: 8px;
     border: 1px solid #ccc;
