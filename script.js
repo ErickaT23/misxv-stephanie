@@ -455,7 +455,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     window.guardarDeseo(nombre, mensaje)
       .then(() => {
-        alert('¡Gracias por enviar tu deseo a Daniela! 💖');
+        alert('¡Gracias por enviar tu deseo a Stephanie Alessandra! 💖');
         document.getElementById('wish-name').value = '';
         document.getElementById('wish-message').value = '';
       })
